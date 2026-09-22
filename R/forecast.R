@@ -4,7 +4,7 @@
 #' @param n_sims number of replicates to use in the simulation.
 #' @param overwrite boolean indicating if we want to overwrite any simulation data
 #' currently held (defaults to FALSE).
-#' @paran data_sum boolean indicating if we want to return all the information
+#' @param data_sum boolean indicating if we want to return all the information
 #' needed to run a Bayesian analysis of the recruitment data (defaults to FALSE).
 #'
 #' @returns an object of class `fahb_problem`.

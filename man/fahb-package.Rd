@@ -21,5 +21,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Duncan Wilson \email{d.t.wilson@leeds.ac.uk} (\href{https://orcid.org/0000-0001-7949-8718}{ORCID}) [copyright holder]
 
+Authors:
+\itemize{
+  \item Duncan Wilson \email{d.t.wilson@leeds.ac.uk} (\href{https://orcid.org/0000-0001-7949-8718}{ORCID}) [copyright holder]
+}
+
 }
 \keyword{internal}
