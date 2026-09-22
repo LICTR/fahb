@@ -17,3 +17,8 @@ Useful links:
 
 **Maintainer**: Duncan Wilson <d.t.wilson@leeds.ac.uk>
 ([ORCID](https://orcid.org/0000-0001-7949-8718)) \[copyright holder\]
+
+Authors:
+
+- Duncan Wilson <d.t.wilson@leeds.ac.uk>
+  ([ORCID](https://orcid.org/0000-0001-7949-8718)) \[copyright holder\]
