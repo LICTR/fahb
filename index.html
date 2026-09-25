@@ -48,7 +48,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/DTWilson/fahb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/lictr/fahb/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -82,7 +82,7 @@
 <p>Suppose we are planning an internal pilot for a trial which aims to recruit <code>N = 320</code> participants from <code>m = 20</code> sites, and that we expect recruitment to complete in three years. The pilot analysis will happen at <code>t = 0.5</code> years, and we would class the trial as infeasible if recruitment took longer than <code>rel_thr = 1.2</code> times the expected recruitment time.</p>
 <p>The variables <code>N, m, t</code> and <code>rel_thr</code> define the design variables. For the model parameters, for the purpose of illustration we use the package defaults (but see the vignette and the associated paper for more discussion of these). To use <code>fahb</code> we first encode all design variables and model parameters in a <code>fahb_problem</code> object, then run some simulations via <code><a href="reference/forecast.html">forecast()</a></code> before finding possible decision rules and the operating characteristics they lead to:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dtwilson.github.io/fahb/">fahb</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lictr.github.io/fahb/" class="external-link">fahb</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">problem</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fahb_problem.html">fahb_problem</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fl">320</span>, m <span class="op">=</span> <span class="fl">20</span>, t <span class="op">=</span> <span class="fl">0.5</span>, rel_thr <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></span>
 <span></span>
@@ -95,29 +95,29 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Standard progression criteria</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     FPR        FNR         n_p          m_p        r_p</span></span>
-<span><span class="co">#&gt; 1   0.0 0.82817058 17.81878829 -0.059458005  9.6590446</span></span>
-<span><span class="co">#&gt; 11  0.1 0.45825809  9.57670582  1.334793215  6.6483566</span></span>
-<span><span class="co">#&gt; 21  0.2 0.31559939  6.90517099  0.182386148  6.0045943</span></span>
-<span><span class="co">#&gt; 41  0.4 0.18030282  1.59558082  0.759740721  5.6010379</span></span>
-<span><span class="co">#&gt; 51  0.5 0.12835116  2.70338476  1.696370342  4.5998899</span></span>
-<span><span class="co">#&gt; 71  0.7 0.05625781  0.14306472  0.904175281  3.5567570</span></span>
-<span><span class="co">#&gt; 81  0.8 0.03681067 -0.30186503  0.937890251  2.8416713</span></span>
-<span><span class="co">#&gt; 91  0.9 0.02222531 -0.90403448 -0.022824150  1.9307604</span></span>
-<span><span class="co">#&gt; 101 1.0 0.00000000  0.01221748  0.008838253 -0.7620012</span></span>
+<span><span class="co">#&gt;     FPR        FNR         n_p         m_p        r_p</span></span>
+<span><span class="co">#&gt; 1   0.0 0.87800497 14.89113845  5.23821827 11.2983982</span></span>
+<span><span class="co">#&gt; 11  0.1 0.47333518  9.75445041 -0.09309377  6.6868158</span></span>
+<span><span class="co">#&gt; 21  0.2 0.33766234  5.58934399  0.63584854  6.7071152</span></span>
+<span><span class="co">#&gt; 41  0.4 0.18941697  4.14297592  0.66606272  5.3705821</span></span>
+<span><span class="co">#&gt; 51  0.5 0.12848853  2.59814424  1.86456234  4.6667348</span></span>
+<span><span class="co">#&gt; 71  0.7 0.05733628 -0.15483242  1.23632359  3.6095247</span></span>
+<span><span class="co">#&gt; 81  0.8 0.03799392  0.28706465 -0.80286063  3.0726292</span></span>
+<span><span class="co">#&gt; 91  0.9 0.01809892 -0.93786254  0.07155125  1.6746750</span></span>
+<span><span class="co">#&gt; 101 1.0 0.00000000 -0.05764603 -0.51362184 -0.1510998</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Bayesian approximation</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     FPR        FNR      T_p</span></span>
-<span><span class="co">#&gt; 1   0.0 1.00000000 1.441843</span></span>
-<span><span class="co">#&gt; 11  0.1 0.42366995 3.123216</span></span>
-<span><span class="co">#&gt; 21  0.2 0.31309904 3.298833</span></span>
-<span><span class="co">#&gt; 41  0.4 0.16335602 3.594781</span></span>
-<span><span class="co">#&gt; 51  0.5 0.11543270 3.721615</span></span>
-<span><span class="co">#&gt; 71  0.7 0.05723017 3.916746</span></span>
-<span><span class="co">#&gt; 81  0.8 0.03653285 4.001302</span></span>
-<span><span class="co">#&gt; 91  0.9 0.02139186 4.085859</span></span>
-<span><span class="co">#&gt; 101 1.0 0.00000000 4.554172</span></span>
+<span><span class="co">#&gt; 1   0.0 1.00000000 1.370305</span></span>
+<span><span class="co">#&gt; 11  0.1 0.44639403 3.119537</span></span>
+<span><span class="co">#&gt; 21  0.2 0.31749102 3.294461</span></span>
+<span><span class="co">#&gt; 41  0.4 0.16869301 3.563093</span></span>
+<span><span class="co">#&gt; 51  0.5 0.12047527 3.688038</span></span>
+<span><span class="co">#&gt; 71  0.7 0.05692180 3.900445</span></span>
+<span><span class="co">#&gt; 81  0.8 0.03481625 4.009772</span></span>
+<span><span class="co">#&gt; 91  0.9 0.01782260 4.184695</span></span>
+<span><span class="co">#&gt; 101 1.0 0.00000000 4.475193</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; FPR - False Positive Rate</span></span>
 <span><span class="co">#&gt; FNR - False Negative Rate</span></span>
@@ -135,25 +135,13 @@
 <p>The second type of decision rules is defined by <code>T_p</code>, the maximum expected time until full recruitment conditional on the pilot data. We progress to the main trial only if the actual posterior predictive expectation is lower than this threshold.</p>
 <p>Decision rules of both types are characterised by their false positive (<code>FPR</code>) and false negative (<code>FNR</code>) rates. These are estimated via simulation by comparing the decisions made with the underlying feasibility, as determined by the threshold <code>rel_thr</code>. For example, we can attain <code>FPR = 0.15</code> and <code>FNR = 0.34</code> if we proceed only if we recruit at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10.48</mn><annotation encoding="application/x-tex">10.48</annotation></semantics></math> participants from at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> site, with an overall rate of at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.57</mn><annotation encoding="application/x-tex">6.57</annotation></semantics></math> participants per site-year. We can get slightly better operating characteristics if we use a Bayesian progression rules instead. If we want to improve the pilot further we can increase the design variable <code>t_int</code> so that the internal pilot will have more data.</p>
 </div>
-<div class="section level2">
-<h2 id="temporary-windows-installation-issue-september-2026">Temporary Windows installation issue (September 2026).<a class="anchor" aria-label="anchor" href="#temporary-windows-installation-issue-september-2026"></a>
-</h2>
-<p>The current CRAN versions of <code>rstan</code> and <code>StanHeaders</code> may be incompatible on Windows (<code>rstan</code> 2.32.7 with <code>StanHeaders</code> 2.39.1), causing Stan model compilation to fail. This also causes the Windows-release GitHub Actions check for this package to fail. This is an upstream issue rather than a failure in the package itself.</p>
-<p>As a temporary workaround, Windows users experiencing Stan compilation errors can install the compatible <code>StanHeaders</code> 2.32.10 release. The issue is expected to disappear once a compatible updated version of <code>rstan</code> is available from CRAN.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_version</span><span class="op">(</span></span>
-<span>    <span class="st">"StanHeaders"</span>,</span>
-<span>    version <span class="op">=</span> <span class="st">"2.32.10"</span>,</span>
-<span>    repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=fahb" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/DTWilson/fahb/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/DTWilson/fahb/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/lictr/fahb/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/lictr/fahb/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -183,9 +171,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/DTWilson/fahb/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/DTWilson/fahb/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/lictr/fahb/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/lictr/fahb/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/DTWilson/fahb" class="external-link"><img src="https://codecov.io/gh/DTWilson/fahb//branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://cran.r-project.org/package=fahb" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/fahb" alt="Downloads"></a></li>
 </ul>
 </div>
 

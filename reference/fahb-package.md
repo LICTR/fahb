@@ -7,11 +7,11 @@ using frequentist and Bayesian operating characteristics.
 
 Useful links:
 
-- <https://dtwilson.github.io/fahb/>
+- <https://lictr.github.io/fahb/>
 
-- <https://github.com/DTWilson/fahb>
+- <https://github.com/lictr/fahb>
 
-- Report bugs at <https://github.com/DTWilson/fahb/issues>
+- Report bugs at <https://github.com/lictr/fahb/issues>
 
 ## Author
 
