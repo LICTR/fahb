@@ -44,6 +44,13 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+      
+      - name: Show Stan versions
+        if: runner.os == 'Windows'
+        shell: Rscript {0}
+        run: |
+          cat("rstan: ", as.character(packageVersion("rstan")), "\n")
+          cat("StanHeaders: ", as.character(packageVersion("StanHeaders")), "\n")
 
       - uses: r-lib/actions/check-r-package@v2
         with:
