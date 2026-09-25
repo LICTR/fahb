@@ -135,6 +135,12 @@
 <p>The second type of decision rules is defined by <code>T_p</code>, the maximum expected time until full recruitment conditional on the pilot data. We progress to the main trial only if the actual posterior predictive expectation is lower than this threshold.</p>
 <p>Decision rules of both types are characterised by their false positive (<code>FPR</code>) and false negative (<code>FNR</code>) rates. These are estimated via simulation by comparing the decisions made with the underlying feasibility, as determined by the threshold <code>rel_thr</code>. For example, we can attain <code>FPR = 0.15</code> and <code>FNR = 0.34</code> if we proceed only if we recruit at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10.48</mn><annotation encoding="application/x-tex">10.48</annotation></semantics></math> participants from at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> site, with an overall rate of at least <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6.57</mn><annotation encoding="application/x-tex">6.57</annotation></semantics></math> participants per site-year. We can get slightly better operating characteristics if we use a Bayesian progression rules instead. If we want to improve the pilot further we can increase the design variable <code>t_int</code> so that the internal pilot will have more data.</p>
 </div>
+<div class="section level2">
+<h2 id="temporary-windows-installation-issue-september-2026">Temporary Windows installation issue (September 2026).<a class="anchor" aria-label="anchor" href="#temporary-windows-installation-issue-september-2026"></a>
+</h2>
+<p>The current CRAN versions of <code>rstan</code> and <code>StanHeaders</code> may be incompatible on Windows (<code>rstan</code> 2.32.7 with <code>StanHeaders</code> 2.39.1), causing Stan model compilation to fail. This also causes the Windows-release GitHub Actions check for this package to fail. This is an upstream issue rather than a failure in the package itself.</p>
+<p>As a temporary workaround, Windows users experiencing Stan compilation errors can install the compatible <code>StanHeaders</code> 2.32.10 release. The issue is expected to disappear once a compatible updated version of <code>rstan</code> is available from CRAN.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
