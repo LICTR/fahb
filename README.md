@@ -134,3 +134,11 @@ have more data.
 The current CRAN versions of `rstan` and `StanHeaders` may be incompatible on Windows (`rstan` 2.32.7 with `StanHeaders` 2.39.1), causing Stan model compilation to fail. This also causes the Windows-release GitHub Actions check for this package to fail. This is an upstream issue rather than a failure in the package itself.
 
 As a temporary workaround, Windows users experiencing Stan compilation errors can install the compatible `StanHeaders` 2.32.10 release. The issue is expected to disappear once a compatible updated version of `rstan` is available from CRAN.
+
+``` r
+remotes::install_version(
+    "StanHeaders",
+    version = "2.32.10",
+    repos = "https://cloud.r-project.org"
+)
+```
