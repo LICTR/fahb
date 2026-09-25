@@ -136,6 +136,15 @@ errors can install the compatible `StanHeaders` 2.32.10 release. The
 issue is expected to disappear once a compatible updated version of
 `rstan` is available from CRAN.
 
+``` r
+
+remotes::install_version(
+    "StanHeaders",
+    version = "2.32.10",
+    repos = "https://cloud.r-project.org"
+)
+```
+
 # Package index
 
 ## All functions

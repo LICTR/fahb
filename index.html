@@ -140,6 +140,12 @@
 </h2>
 <p>The current CRAN versions of <code>rstan</code> and <code>StanHeaders</code> may be incompatible on Windows (<code>rstan</code> 2.32.7 with <code>StanHeaders</code> 2.39.1), causing Stan model compilation to fail. This also causes the Windows-release GitHub Actions check for this package to fail. This is an upstream issue rather than a failure in the package itself.</p>
 <p>As a temporary workaround, Windows users experiencing Stan compilation errors can install the compatible <code>StanHeaders</code> 2.32.10 release. The issue is expected to disappear once a compatible updated version of <code>rstan</code> is available from CRAN.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_version</span><span class="op">(</span></span>
+<span>    <span class="st">"StanHeaders"</span>,</span>
+<span>    version <span class="op">=</span> <span class="st">"2.32.10"</span>,</span>
+<span>    repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
