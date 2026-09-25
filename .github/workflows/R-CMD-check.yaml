@@ -44,17 +44,6 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-      
-      - name: Pin compatible StanHeaders on Windows
-        if: runner.os == 'Windows'
-        shell: Rscript {0}
-        run: |
-          remotes::install_version(
-            "StanHeaders",
-            version = "2.32.10",
-            repos = "https://cloud.r-project.org",
-            upgrade = "never"
-          )
 
       - uses: r-lib/actions/check-r-package@v2
         with:
