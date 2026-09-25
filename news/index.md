@@ -1,6 +1,6 @@
 # Changelog
 
-## fahb (development version)
+## fahb 1.0.1
 
 ## fahb 1.0.1
 
