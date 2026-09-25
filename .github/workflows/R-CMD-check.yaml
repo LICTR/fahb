@@ -45,12 +45,16 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
       
-      - name: Show Stan versions
+      - name: Pin compatible StanHeaders on Windows
         if: runner.os == 'Windows'
         shell: Rscript {0}
         run: |
-          cat("rstan: ", as.character(packageVersion("rstan")), "\n")
-          cat("StanHeaders: ", as.character(packageVersion("StanHeaders")), "\n")
+          remotes::install_version(
+            "StanHeaders",
+            version = "2.32.10",
+            repos = "https://cloud.r-project.org",
+            upgrade = "never"
+          )
 
       - uses: r-lib/actions/check-r-package@v2
         with:
