@@ -27,6 +27,6 @@ Imports:
     posterior,
     rlang
 VignetteBuilder: knitr
-URL: https://dtwilson.github.io/fahb/, https://github.com/DTWilson/fahb
-BugReports: https://github.com/DTWilson/fahb/issues
+URL: https://lictr.github.io/fahb/, https://github.com/lictr/fahb
+BugReports: https://github.com/lictr/fahb/issues
 Config/roxygen2/version: 8.1.0

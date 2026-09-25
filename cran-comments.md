@@ -8,5 +8,3 @@
 
   This is a known issue on some systems (e.g. CI / CRAN machines) and is not
   related to the package. No action is required.
-
-* This is a new release

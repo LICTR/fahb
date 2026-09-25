@@ -12,9 +12,9 @@ using frequentist and Bayesian operating characteristics.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://dtwilson.github.io/fahb/}
-  \item \url{https://github.com/DTWilson/fahb}
-  \item Report bugs at \url{https://github.com/DTWilson/fahb/issues}
+  \item \url{https://lictr.github.io/fahb/}
+  \item \url{https://github.com/lictr/fahb}
+  \item Report bugs at \url{https://github.com/lictr/fahb/issues}
 }
 
 }
