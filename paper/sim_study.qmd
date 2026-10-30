@@ -8,32 +8,32 @@ editor: visual
 
 This document records the design and analysis of a simulation study comparing methods for making progression decisions based on internal pilot recruitment data.
 
-## Variables and paramerters
+## Variables and parameters
 
 Using the syntax of the `fahb` package, we have the following design variables:
 
--   `m` - the number of sites to open over the course of the full trial.
--   `t` - the timing of the pilot interim analysis, expressed as a proportion of the expected time to recruit to target.
--   `N` - the target sample size which, when attained, will stop recruitment.
+- `m` - the number of sites to open over the course of the full trial.
+- `t` - the timing of the pilot interim analysis, expressed as a proportion of the expected time to recruit to target.
+- `N` - the target sample size which, when attained, will stop recruitment.
 
 We also have some model parameters:
 
--   `beta` and `sigma` - mean and standard deviation parameters for the log-normal distribution of the site recruitment rates.
--   `lambda` - the rate describing the Poisson process of site opening.
+- `beta` and `sigma` - mean and standard deviation parameters for the log-normal distribution of the site recruitment rates.
+- `lambda` - the rate describing the Poisson process of site opening.
 
 Because we have a Bayesian model, the parameters to vary in a simulation study are actually the hyper-parameters describing the priors for the three substantive parameters above. We have:
 
--   `mu` and `nu` - mean and sd parameters of the normal prior on `beta`.
--   `rho` and `pi` - shape and rate parameters of the gamma prior on `sigma`.
--   `delta` and `epsilon` - shape and rate parameters of the gamma prior on `lambda`.
+- `mu` and `nu` - mean and sd parameters of the normal prior on `beta`.
+- `rho` and `pi` - shape and rate parameters of the gamma prior on `sigma`.
+- `delta` and `epsilon` - shape and rate parameters of the gamma prior on `lambda`.
 
 ## Scenarios
 
 We define scenarios by taking low or high values for:
 
--   The design parameters;
--   The expected prior values of the three substantive model parameters; and
--   An overall level of uncertainty in all three prior distributions.
+- The design parameters;
+- The expected prior values of the three substantive model parameters; and
+- An overall level of uncertainty in all three prior distributions.
 
 For `m`, we will use 10 (low) or 30 (high).
 
