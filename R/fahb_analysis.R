@@ -109,8 +109,8 @@ fahb_analysis <- function(n_pilot, t_pilot,
     us <- cbind(us, exp(r$c[,1:m_p,1] + beta_0))
     
     # For site setup rates we have a simple conjugate analysis
-    setup_r_a1 <- problem$so_hps[1] + m_p
-    setup_r_b1 <- problem$so_hps[2] + site_t
+    setup_r_a1 <- problem$so_hp_a + m_p
+    setup_r_b1 <- problem$so_hp_b + site_t
     
     # We can then generate samples from the posterior of setup rate
     setup_rates <- stats::rgamma(nrow(us), setup_r_a1, setup_r_b1)
