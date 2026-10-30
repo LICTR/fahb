@@ -26,7 +26,7 @@ t <- t*sce[12]
 
 problem <- fahb_problem(N = N, m = m, t = t, rel_thr = 1.2, 
                         so_hps = c(delta, epsilon), 
-                        mean_rr_hps = c(mu, nu), 
+                        mean_rr_hps = c(mu_hp, nu), 
                         sd_rr_hps = c(rho, pi))
 
 problem <- forecast(problem, data_sum = TRUE)
@@ -47,7 +47,6 @@ bayes_model <- brm(y | rate(t) ~ 1 + (1 | c), data = int_data, family = poisson(
                    prior = bprior, 
                    stanvars = stanvars,
                    chains = 0, silent = 2)
-
 
 res <- NULL
 for(i in 1:N){
