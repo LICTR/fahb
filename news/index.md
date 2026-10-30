@@ -4,7 +4,11 @@
 
 ## fahb 1.0.1
 
+CRAN release: 2026-09-25
+
 ## fahb 1.0.1
+
+CRAN release: 2026-09-25
 
 - Functions in forecast.R are now fully documented.
 
