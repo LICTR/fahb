@@ -1,4 +1,4 @@
-# fahb (development version)
+# fahb 1.0.2
 
 # fahb 1.0.2
 
