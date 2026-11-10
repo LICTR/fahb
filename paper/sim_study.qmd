@@ -176,6 +176,9 @@ names(scenarios)[1:5] <- c("id", "part", "m", "t", "N")
 To help visualise these priors we can plot them - for each of the three parameters we have a low and high mean and a low and high uncertainty:
 
 ```{r}
+library(ggplot2)
+library(patchwork)
+
 N <- 10^5
 df <- data.frame(y = c(exp(rnorm(N, 1.79, 0.0593)),
                        exp(rnorm(N, 1.75,0.2890)),
@@ -205,6 +208,8 @@ p2 <- ggplot(df, aes(y, colour= unc)) + stat_density(alpha = 0) +
 ```
 
 ```{r}
+library(here)
+
 df <- data.frame(y = c(rgamma(N, 200, 40),
                        rgamma(N, 10, 2),
                        rgamma(N, 1800, 120),
@@ -274,13 +279,14 @@ scenarios$exp_t <- apply(scenarios, 1, exp_rec_time)
 We then use these expected recruitment times to define the underlying feasibility threshold for each scenario. Here, we classify a trial as truly feasible if its true time to recruit is less than 1.2 times its expected time to recruit:
 
 ```{r}
+
 scenarios$thr <- 1.2*scenarios$exp_t
-#write.csv(scenarios, file = paste0("paper/scenarios.csv"), row.names = FALSE)
+#write.csv(scenarios, file = here("paper", "scenarios.csv"), row.names = FALSE)
 ```
 
 ## HPC
 
-To keep the simulation study managable, we run it on HPC. Our `scenarios.csv` file has replicated each scenario ten times to help us batch the overall study into small chunks.
+To keep the simulation study manageable, we run it on HPC. Our `scenarios.csv` file has replicated each scenario ten times to help us batch the overall study into small chunks.
 
 ## Analysis
 

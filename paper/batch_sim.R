@@ -1,6 +1,13 @@
-#setwd("C:/Users/meddwilb/OneDrive - University of Leeds/Documents/Research/Projects/fahb/R")
+# For HPC - will not run locally
 library(brms)
 library(fahb)
+library(extraDistr)
+library(cmdstanr)
+
+options(
+  mc.cores = 1,
+  cmdstanr_make_args = c("-j1")
+)
 
 input_arg <- as.numeric(commandArgs(TRUE))
 
@@ -46,6 +53,7 @@ bprior <- c(prior(normal(mu_hp, nu), class = "Intercept"),
 bayes_model <- brm(y | rate(t) ~ 1 + (1 | c), data = int_data, family = poisson(),
                    prior = bprior, 
                    stanvars = stanvars,
+                   backend = "cmdstanr",
                    chains = 0, silent = 2)
 
 res <- NULL
