@@ -1,6 +1,8 @@
 # fahb (development version)
 
-# fahb 1.0.1
+# fahb 1.0.2
+
+fahb_analysis() no longer fails when all sites have opened in the pilot.
 
 # fahb 1.0.1
 
