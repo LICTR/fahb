@@ -1,5 +1,7 @@
 # Changelog
 
+## fahb (development version)
+
 ## fahb 1.0.2
 
 CRAN release: 2026-11-10
