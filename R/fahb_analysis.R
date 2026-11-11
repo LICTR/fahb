@@ -65,9 +65,16 @@ fahb_analysis <- function(n_pilot, t_pilot,
   m <- problem$m
   
   # Get standard PC summaries
-  n_p <- sum(n_pilot)
-  m_p <- length(n_pilot)
-  r_p <- n_p/sum(t_pilot)
+  if(t_pilot != 0){
+    n_p <- sum(n_pilot)
+    m_p <- length(n_pilot)
+    r_p <- n_p/sum(t_pilot)
+  } else {
+    n_p <- 0
+    m_p <- 0
+    r_p <- 0
+    t_pilot <- 0.000000001
+  }
   
   # Fit a Bayesian model
   if(is.null(bayes_model)){
@@ -109,8 +116,10 @@ fahb_analysis <- function(n_pilot, t_pilot,
     
     # Add to that matrix the posterior samples for the sites which have already
     # opened
-    r <- brms::ranef(fit, summary = F)
-    us <- cbind(us, exp(r$c[,1:m_p,1] + beta_0))
+    if(m_p >0){
+      r <- brms::ranef(fit, summary = F)
+      us <- cbind(us, exp(r$c[,1:m_p,1] + beta_0))
+    }
     
     # We can then generate samples from the posterior of setup rate
     setup_rates <- stats::rgamma(nrow(us), setup_r_a1, setup_r_b1)
@@ -121,7 +130,9 @@ fahb_analysis <- function(n_pilot, t_pilot,
       if(m-m_p == 1) setup_times <- t(setup_times)
       
       # Add pilot sites using a setup time of 0
-      setup_times <- cbind(setup_times, matrix(rep(0, m_p*nrow(us)), ncol = m_p))
+      if(m_p > 0){
+        setup_times <- cbind(setup_times, matrix(rep(0, m_p*nrow(us)), ncol = m_p))
+      }
       
       site_matrix <- cbind(us, setup_times)
       
