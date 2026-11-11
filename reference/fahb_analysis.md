@@ -58,38 +58,11 @@ analysis <- fahb_analysis(
   t_pilot = t_pilot,
   problem = problem
 )
-#> Compiling the model...
-#> the number of chains is less than 1; sampling not done
+#> Error in if (t_pilot != 0) {    n_p <- sum(n_pilot)    m_p <- length(n_pilot)    r_p <- n_p/sum(t_pilot)} else {    n_p <- 0    m_p <- 0    r_p <- 0    t_pilot <- 1e-09}: the condition has length > 1
 
 print(analysis)
-#> Standard progression criteria statistics:
-#>       n_p       m_p       r_p 
-#> 10.000000  3.000000  6.666667 
-#> 
-#> Expected posterior predictive time to recruit:
-#> exp_pp_T 
-#> 3.538887 
-#> 
-#> Posterior predictive distribution quantiles:
-#>     0.5%     2.5%      20%      50%      80%    97.5%    99.5% 
-#> 2.258355 2.531464 3.018079 3.475001 4.014829 4.917012 5.566843 
-#> 
-#> Posterior site opening rate hyperparamaters (Gamma):
-#> shape  rate 
-#> 33.00  3.35 
-#> 
+#> Error: object 'analysis' not found
 plot(analysis)
-#> [[1]]
-
-#> 
-#> [[2]]
-
-#> 
-#> [[3]]
-
-#> 
-#> [[4]]
-
-#> 
+#> Error: object 'analysis' not found
 # }
 ```
