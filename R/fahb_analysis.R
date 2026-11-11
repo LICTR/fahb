@@ -65,7 +65,7 @@ fahb_analysis <- function(n_pilot, t_pilot,
   m <- problem$m
   
   # Get standard PC summaries
-  if(!identical(t_pilot, 0)){
+  if(!identical(t_pilot, 0)){ 
     n_p <- sum(n_pilot)
     m_p <- length(n_pilot)
     r_p <- n_p/sum(t_pilot)
