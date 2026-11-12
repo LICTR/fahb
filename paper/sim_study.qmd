@@ -39,7 +39,7 @@ For `m`, we will use 10 (low) or 30 (high).
 
 For `t` we will use 0.2 (low) or 0.5 (high).
 
-For `N` we will use 352 (low) or 788 (hgih). These correspond to total numbers of patients needed to detect an effect of 0.3 or 0.2 respectively, with a two-sided type I error rate of 0.05 and a power of 0.8.
+For `N` we will use 352 (low) or 788 (high). These correspond to total numbers of patients needed to detect an effect of 0.3 or 0.2 respectively, with a two-sided type I error rate of 0.05 and a power of 0.8.
 
 For the expectation of `beta` we will use 6 (low) or 20 (high) patients per site per year.
 
