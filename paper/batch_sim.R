@@ -11,8 +11,9 @@ options(
 
 input_arg <- as.numeric(commandArgs(TRUE))
 
-task_id <- input_arg[1]; N <- input_arg[2]
+task_id <- input_arg[1]; N_sims <- input_arg[2]; seed <- input_arg[3]
 #task_id <- 1; N <- 10
+set.seed(seed)
 
 #scenarios <- matrix(c(1,1,20,0.5,300,1.75,0.3,10,0.4,10,1,
 #                      1,2,20,0.5,300,1.75,0.3,10,0.4,10,1,
@@ -40,8 +41,13 @@ problem <- forecast(problem, data_sum = TRUE)
 
 ts <- problem$sims[1,5:(4+m)]
 ns <- problem$sims[1,(5+m):(4+2*m)]
-ns <- as.numeric(ns[ts != 0])
-ts <- as.numeric(ts[ts != 0])
+if(any(ts != 0)){
+	ns <- as.numeric(ns[ts != 0])
+	ts <- as.numeric(ts[ts != 0])
+} else {
+	ns <- 0
+	ts <- 0
+}
 
 int_data <- data.frame(y = ns, c = 1:length(ns), t = ts)
 
@@ -57,13 +63,20 @@ bayes_model <- brm(y | rate(t) ~ 1 + (1 | c), data = int_data, family = poisson(
                    chains = 0, silent = 2)
 
 res <- NULL
-for(i in 1:N){
+for(i in 1:N_sims){
   problem <- forecast(problem, n_sims = 1, overwrite = TRUE, data_sum = TRUE)
+  print(problem$sims)
   
   ts <- problem$sims[1,5:(4+m)]
   ns <- problem$sims[1,(5+m):(4+2*m)]
-  ns <- as.numeric(ns[ts != 0])
-  ts <- as.numeric(ts[ts != 0])
+  if(any(ts != 0)){
+  	ns <- as.numeric(ns[ts != 0])
+  	ts <- as.numeric(ts[ts != 0])
+  } else {
+	ns <- 0
+	ts <- 0
+  }
+  print(c(ns, ts))
   
   analysis <- fahb_analysis(n_pilot = ns,
                             t_pilot = ts,
