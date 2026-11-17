@@ -394,7 +394,7 @@ scenarios <- read.csv(here("R", "scenarios.csv"))
 
 # Check we have the right number of data sets
 counts <- rep(0, 1280)
-sce_sub <- NULL
+sce_sub <- NULL 
 for(i in sces){
   for(j in parts){
     fe <- file.exists(here("data","raw","results", paste0("res_", i, "_", j, ".csv")))
@@ -420,7 +420,6 @@ for(i in sces){
   saveRDS(sce_data, file = here("data", paste0("res_", i, "_full.rds")))
 }
 ```
-
 
 ## Analysis
 
@@ -544,8 +543,8 @@ Bayes_opt_fnr <- function(nom_fpr, opt_vals){
 # For example,
 head(Bayes_OCs_curve(results = res_1_full, scenario = scenarios[1,]))
 ```
-We now need to work through the datasets for every scenario, finding the approximate Pareto fronts for both methods and saving these.
 
+We now need to work through the datasets for every scenario, finding the approximate Pareto fronts for both methods and saving these.
 
 ```{r, eval = FALSE}
 full_res <- NULL
@@ -768,90 +767,105 @@ ggplot(df, aes(fpr, fnr, colour = t)) + geom_step() +
   theme_minimal()
 ```
 
-## Extension
+## Extensions
+
+
+### Bayesian SSD
+
+On the face of it, the Bayesian approach is not feasible at the design stage due to the significant computational burden. To address this we use the same basic approach outlined by Strong _et al._ for fast approximate EVSI calculations. This involves fitting a flexible (we use a logistic GAM) regression model to the same set of simulated data which we use in the analysis of standard PC decision rules. Specifically, we regress the true recruitment time against a set of summary statistics, giving a model for the mean posterior predictive time to recruit - exactly the statistic which features in our Bayesian decision rule. Moreover, we can note that PC decision rules based on the three standard summary statistics came very close in performance to the fully Bayesian approach, which suggests that these statistics, while not technically sufficient, can be used as the basis of an approximate Bayesian decision rule without any significant impact on performance. 
+
+The approximate Bayesian approach is implemented in `fahb` as part of the `fahb_design()` function. Here, we apply this function to each of our scenarios and compare the FNRs of the resulting approximate decision rules with those corresponding FNRs of the fully Bayesian approach we have already calculated above.  
+
+```{r, eval = FALSE}
+approx_b_fnrs <- NULL
+for(i in 1:128){
+  print(i)
+  i <- i*10 - 9
+  sce <- as.numeric(scenarios[i,])
+
+  scenario_id <- sce[1]; part <- sce[2]
+
+  m <- sce[3]; t <- sce[4]; N <- sce[5]
+  mu_hp <- sce[6]; nu <- sce[7]
+  rho <- sce[8]; pi <- sce[9]
+  delta <- sce[10]; epsilon <- sce[11]
+  t <- t*sce[12]
+
+  problem <- fahb_problem(N = N, m = m, t = t, rel_thr = 1.2,
+                        so_hps = c(delta, epsilon),
+                        mean_rr_hps = c(mu_hp, nu),
+                        sd_rr_hps = c(rho, pi))
+  
+  problem <- forecast(problem, n_sims = 10^5)
+  design <- fahb_design(problem)
+
+  approx_b_fnrs <- c(approx_b_fnrs, design$Bayes_OCs[2:100,2])
+}
+
+full_res <- as.data.frame(readRDS(here("data", "full_res.rds")))
+full_res_ext1 <- cbind(full_res, approx_b_fnrs)
+#saveRDS(full_res_ext1, here("data", "full_res_ext1.rds"))
+```
+
+```{r}
+df <- readRDS(here("data", "full_res_ext1.rds"))
+quantile(df[,7] - df[,8], c(0, 0.005, 0.025, 0.05, 0.5, 0.95, 0.975, 0.995, 1))
+```
+
+This shows us that yes, the operating characteristics of the approximation do indeed tally with those of the fully Bayesian approach. We should also note that the approximate decision rule, though perhaps not optimal, is nevertheless a well defined rule and the estimated operating characteristics of that rule are only approximate in the sense of the Monte Carlo error. We can therefore pre-specify this rule and then apply it directly to the analysis of the pilot data (avoiding a fully Bayesian analysis) to arrive at our decision.
 
 ### External pilots
 
-We can extend our approach easily to external pilots. The key changes are i) we reset everything after interim so that no sites are open and no patients have been recruited, and ii) we define the external pilot design by its numbers of participants and of sites. We can give a single method if we have a flag for resetting and if we define pilot sample sizes as caps and finish either when they are hit or when the interim analysis time point arrives - whichever comes first.
+We can extend our approach easily to external pilots. The key changes are i) we reset everything after interim so that no sites are open and no patients have been recruited, and ii) we define the external pilot design by its numbers of participants and of sites. This in implemented in `fahb` via the optional arguments `n_ext` aqnd `m_ext` when calling `fahb_problem()`, denoting the pilot numbers of participants and sites respectively. When these arguments are provided, `fahb` infers that we are working with an external pilot. Note that we still provide `t`, the time of the pilot analysis; in the case of an external pilot, analysis will happen at time `t` or when `n_ext` participants have been recruited - whichever comes first. 
+
+We use `fahb` to find the best FNR available for a FPR of at most 0.2, for the GUSTO scenario and for a range of choices of `n_ext` and `m_ext`:
 
 ```{r}
-scenarios <- read.csv("R/gusto.csv")[1,]
-
 ext_design <- expand.grid(m_p = 3:10,
                           target_n_p = seq(30, 150, 10))
 
-scenarios <- scenarios[rep(1, nrow(ext_design)),]
-scenarios <- cbind(scenarios, ext_design)
-scenarios$id <- 1:nrow(scenarios)
+sce <- as.numeric(read.csv(here("paper", "gusto.csv"))[1,])
 
-scenarios <- scenarios[rep(1:nrow(scenarios), each = 10),]
-scenarios$part <- rep(1:10, 104)
+m <- sce[3]; t <- sce[4]; N <- sce[5]
+mu_hp <- sce[6]; nu <- sce[7]
+rho <- sce[8]; pi <- sce[9]
+delta <- sce[10]; epsilon <- sce[11]
+t <- t*sce[12]
 
-# Change interim analysis time so that we always recruit to target in the pilot
-scenarios$int_t <- 10
-
-#write.csv(scenarios, file = "R/scenarios_ext.csv", row.names = FALSE)
-```
-
-```{r}
-full_res <- NULL
-for(i in 1:104){
-  res_comp <- PC_OCs_curve(i)
-  res_comp <- cbind(res_comp, Bayes_OCs_curve(i)[,2])
-  res_comp <- cbind(i, res_comp)
-  full_res <- rbind(full_res, res_comp)#
+full_res_ext2 <- NULL
+for(i in 1:nrow(ext_design)){
+  print(i)
+  m_ext <- ext_design[i, 1]
+  n_ext <- ext_design[i, 2]
+  problem <- fahb_problem(N = N, m = m, t = t, 
+                          m_ext = m_ext, n_ext = n_ext,
+                          rel_thr = 1.2,
+                        so_hps = c(delta, epsilon),
+                        mean_rr_hps = c(mu_hp, nu),
+                        sd_rr_hps = c(rho, pi))
+  
+  problem <- forecast(problem = problem, n_sims = 10^5)
+  
+  design <- fahb_design(problem)
+  
+  FNRs <- c(design$Prog_Crit_OCs[21,2], design$Bayes_OCs[21,2])
+  
+  full_res_ext2 <- rbind(full_res_ext2, c(m_ext, n_ext, FNRs))
 }
 
-# Note - we are getting a v. small proportions (max 0.5%) of NAs in the Bayesian
-# mean predictions in a handful of scenarios
-
-#saveRDS(full_res, "full_res_ext.rds")
-
-plot(full_res[full_res[,1] == 1, c(2,3)])
-points(full_res[full_res[,1] == 1, c(2,7)], col="red")
+saveRDS(full_res_ext2, here("data", "full_res_ext2.rds"))
 ```
 
 ```{r}
-full_res <- readRDS("full_res_ext.rds")
+df <- as.data.frame(readRDS(here("data", "full_res_ext2.rds")))
 
-ext_design <- expand.grid(m_p = 3:10,
-                          target_n_p = seq(30, 150, 10))
+names(df) <- c("m_ext", "n_ext", "PC_FNR", "Bayes_FNR")
 
-# Collapse down to nominal FPR of 0.2
-res <- full_res[full_res[,2] == 0.2,]
-
-res <- as.data.frame(cbind(res[,c(2,3,7)], ext_design))
-names(res)[2:3] <- c("PC_fnr", "Bayes_fnr")
-
-ggplot(res, aes(m_p, target_n_p, fill=PC_fnr)) +
+ggplot(df, aes(ext_m, ext_n, fill=PC_FNR)) +
   geom_tile(color = "black") +
   scale_fill_gradient(low = "white", high = "darkgreen", name = "FNR") +
   xlab("Pilot sites") + ylab("Pilot participants") +
   theme_minimal()
 
 #ggsave("ext_fnr.pdf", height=9, width=14, units="cm")
-
-res$diff <- res$PC_fnr - res$Bayes_fnr
-ggplot(res, aes(x = diff)) + stat_density(alpha = 0.4) +
-  xlab("Difference in optimal False Negative Rates") + 
-  xlim(c(-0.025, 0.05)) +
-  theme_minimal()
 ```
-
-### Bayesian SSD
-
-On the face of it, the Bayesian approach is not feasible at the design stage. When it comes to choosing the rule we can argue that doesn't have to be a problem, because we don't need to pre-specify as a Bayesian. But a pre-specified rule can inform the sample size / the timing of the internal pilot analysis, so it would be useful.
-
-We can address this by using the NP regression approach of Strong et al., which fits neatly here. Our methods work has shown that rules based on the standard PC items are very close to the OCs of the Bayesian rules, which tells us that an approximation built around those statistics should be very close too. So we can fit a GAM, getting an expected recruit time as a function of the simulated stats. We can then compare those predictions against the ones made by the full Bayesian method:
-
-```{r}
-library(mgcv)
-df <- res_102_full
-fit <- gam(rec_t ~ ti(m_p) + ti(n_p) + ti(r_p) + ti(m_p, n_p), data = df)
-x <- (df$pred_t-predict.gam(fit))
-q <- as.numeric(quantile(x, c(0.01, 0.99)))
-y <- x[x>q[1] & x<q[2]]
-hist(y)
-```
-
-This shows us that yes, the predictions from the GAM do tally well with the predictions made by the full Bayesian method. So it should give a good enough approximation for SSD. Doing that is easy - we proceed exactly as before when dealing with Bayesian rules, but now we use the predictions from the GAM rather than the full method.
