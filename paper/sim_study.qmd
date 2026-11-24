@@ -769,8 +769,7 @@ ggplot(df, aes(fpr, fnr, colour = t)) + geom_step() +
 
 ## Extensions
 
-
-### Bayesian SSD
+### Approximate Bayesian decision rules
 
 On the face of it, the Bayesian approach is not feasible at the design stage due to the significant computational burden. To address this we use the same basic approach outlined by Strong _et al._ for fast approximate EVSI calculations. This involves fitting a flexible (we use a logistic GAM) regression model to the same set of simulated data which we use in the analysis of standard PC decision rules. Specifically, we regress the true recruitment time against a set of summary statistics, giving a model for the mean posterior predictive time to recruit - exactly the statistic which features in our Bayesian decision rule. Moreover, we can note that PC decision rules based on the three standard summary statistics came very close in performance to the fully Bayesian approach, which suggests that these statistics, while not technically sufficient, can be used as the basis of an approximate Bayesian decision rule without any significant impact on performance. 
 
@@ -853,7 +852,7 @@ for(i in 1:nrow(ext_design)){
   full_res_ext2 <- rbind(full_res_ext2, c(m_ext, n_ext, FNRs))
 }
 
-saveRDS(full_res_ext2, here("data", "full_res_ext2.rds"))
+#saveRDS(full_res_ext2, here("data", "full_res_ext2.rds"))
 ```
 
 ```{r}
@@ -861,7 +860,7 @@ df <- as.data.frame(readRDS(here("data", "full_res_ext2.rds")))
 
 names(df) <- c("m_ext", "n_ext", "PC_FNR", "Bayes_FNR")
 
-ggplot(df, aes(ext_m, ext_n, fill=PC_FNR)) +
+ggplot(df, aes(m_ext, n_ext, fill=Bayes_FNR)) +
   geom_tile(color = "black") +
   scale_fill_gradient(low = "white", high = "darkgreen", name = "FNR") +
   xlab("Pilot sites") + ylab("Pilot participants") +
