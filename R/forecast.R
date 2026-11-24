@@ -30,11 +30,12 @@ forecast <- function(problem, n_sims = 10^4, overwrite = FALSE, data_sum = FALSE
                                   data_sum = data_sum)))
   r <- as.data.frame(r)
   if(!data_sum){
-    names(r) <- c("rec_T", "n_p", "m_p", "r_p")
+    names(r) <- c("rec_T", "n_p", "m_p", "r_p", "t_n_p", "t_m_p")
   } else {
     names(r) <- c("rec_T", "n_p", "m_p", "r_p",
                   paste0("t", 1:problem$m),
-                  paste0("n", 1:problem$m))
+                  paste0("n", 1:problem$m),
+                  "t_n_p", "t_m_p")
   }
    
   problem$sims <- r

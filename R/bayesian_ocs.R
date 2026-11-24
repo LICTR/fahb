@@ -4,13 +4,23 @@ bayesian_ocs <- function(problem){
   }
   
   df <- problem$sims
-  unique_m_ps <- length(unique(df$m_p))
-  if(unique_m_ps >= 5){
-    fit <- mgcv::gam(rec_T ~ ti(n_p) + ti(m_p) + ti(r_p) + ti(m_p, n_p), data = df)
+  if(problem$internal){
+    unique_m_ps <- length(unique(df$m_p))
+    if(unique_m_ps >= 5){
+      fit <- mgcv::gam(rec_T ~ ti(n_p) + ti(m_p) + ti(r_p) + ti(m_p, n_p), data = df)
+    } else {
+      fit <- mgcv::gam(rec_T ~ ti(n_p) + ti(r_p), data = df)
+    }
+    df$pred_T <- mgcv::predict.gam(fit)
   } else {
-    fit <- mgcv::gam(rec_T ~ ti(n_p) + ti(r_p), data = df)
+    unique_t_m_ps <- length(unique(df$t_m_p))
+    if(unique_t_m_ps >= 5){
+      fit <- mgcv::gam(rec_T ~ ti(t_n_p) + ti(t_m_p) + ti(r_p) + ti(t_m_p, t_n_p), data = df)
+    } else {
+      fit <- mgcv::gam(rec_T ~ ti(t_n_p) + ti(r_p), data = df)
+    }
+    df$pred_T <- mgcv::predict.gam(fit)
   }
-  df$pred_T <- mgcv::predict.gam(fit)
   
   rules <- seq(min(df$pred_T), max(df$pred_T), length.out = 1000)
   vals <- t(sapply(rules, Bayes_OCs, thr = problem$thr, df = df))

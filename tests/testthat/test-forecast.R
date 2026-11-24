@@ -24,7 +24,7 @@ test_that("forecast simulation output has expected columns", {
   problem <- fahb_problem()
   out <- forecast(problem, n_sims = 5)
   
-  expect_named(out$sims, c("rec_T", "n_p", "m_p", "r_p"))
+  expect_named(out$sims, c("rec_T", "n_p", "m_p", "r_p", "t_n_p", "t_m_p"))
 })
 
 test_that("forecast simulation columns are numeric", {

@@ -24,15 +24,23 @@ simulate_data <- function(beta_m, beta_s,
   rec_rates <- cond_sim(m, target_n, m, setup_r, lambdas)
   
   rec_time <- rec_rates[nrow(rec_rates), 3]
+  
+  # Note rec_rate columns are:
+  # site which opens; opening time; time next site opens;
+  # cumulative rec rate in that period; number recruited in that period;
+  # rec_rate for the site which just opened
 
   if(internal){
     df <- site_dist(rec_rates, int_t)
+    t_n_p <- int_t
+    t_m_p <- rec_rates[nrow(rec_rates), 2]
   } else {
     # If the pilot is external we generate a new set of data using the same 
     # parameters
     rec_rates_p <- cond_sim(m, n_ext, m_ext, setup_r, lambdas)
     int_t <- min(int_t, rec_rates_p[nrow(rec_rates_p), 3])
-    #site_t <- min(int_t, rec_rates_p[nrow(rec_rates_p), 2])
+    t_n_p <- int_t
+    t_m_p <- rec_rates_p[nrow(rec_rates_p), 2]
     
     df <- site_dist(rec_rates_p, int_t)
   }
@@ -43,15 +51,19 @@ simulate_data <- function(beta_m, beta_s,
     n_p <- 0
     m_p <- 0
     r_p <- 0
+    t_n_p <- t_n_p
+    t_m_p <- t_m_p
   } else {
     n_p <- sum(df$y)
     m_p <- nrow(df)
     r_p <- n_p / sum(df$t)
+    t_n_p <- t_n_p
+    t_m_p <- t_m_p
   }
   
   if(!data_sum){
     # Output the interim data and the time to reach target n
-    return(c(rec_time, n_p, m_p, r_p))
+    return(c(rec_time, n_p, m_p, r_p, t_n_p, t_m_p))
   } else {
     # include the data needed for a Bayesian analysis
     open_times <- rep(0, m)
@@ -59,7 +71,7 @@ simulate_data <- function(beta_m, beta_s,
     open_times[df$c] <- df$t
     rec_nums[df$c] <- df$y
     return(c(rec_time, n_p, m_p, r_p,
-             open_times, rec_nums))
+             open_times, rec_nums, t_n_p, t_m_p))
   }
 }
 

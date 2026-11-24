@@ -15,7 +15,7 @@ test_that("simulate_data returns a numeric vector of length 4", {
   )
   
   expect_type(out, "double")
-  expect_length(out, 4)
+  expect_length(out, 6)
 })
 
 test_that("simulate_data returns finite, non-negative values", {
