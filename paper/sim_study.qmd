@@ -829,10 +829,10 @@ m <- sce[3]; t <- sce[4]; N <- sce[5]
 mu_hp <- sce[6]; nu <- sce[7]
 rho <- sce[8]; pi <- sce[9]
 delta <- sce[10]; epsilon <- sce[11]
-t <- t*sce[12]
+t <- 10
 
 full_res_ext2 <- NULL
-for(i in 1:nrow(ext_design)){
+for(i in c(1,104)){#1:nrow(ext_design)){
   print(i)
   m_ext <- ext_design[i, 1]
   n_ext <- ext_design[i, 2]
